@@ -30,6 +30,7 @@ class Category
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Videos", inversedBy="categories")
+     * @ORM\JoinTable(name="categories_videos")
      */
     private $Videos;
 

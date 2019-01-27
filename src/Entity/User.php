@@ -5,11 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -19,34 +21,38 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $firstname;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $lastname;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $birthday;
 
     /**
+     * @Assert\Email()
      * @ORM\Column(type="string", length=255)
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column()
      */
     private $password;
 
     /**
      * @ORM\Column(type="simple_array")
      */
-    private $roles = [];
+    private $roles;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Videos", mappedBy="user")
@@ -56,6 +62,7 @@ class User
     public function __construct()
     {
         $this->videos = new ArrayCollection();
+        $this->roles = array('ROLE_USER');
     }
 
     public function getId(): ?int
@@ -111,7 +118,7 @@ class User
         return $this;
     }
 
-    public function getPassword(): ?string
+    public function getPassword()
     {
         return $this->password;
     }
@@ -123,12 +130,12 @@ class User
         return $this;
     }
 
-    public function getRoles(): ?array
+    public function getRoles()
     {
         return $this->roles;
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles($roles)
     {
         $this->roles = $roles;
 
@@ -164,5 +171,38 @@ class User
         }
 
         return $this;
+    }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+
+    /**
+     * Returns the username used to authenticate the user.
+     *
+     * @return string The username
+     */
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
     }
 }

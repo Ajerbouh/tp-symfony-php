@@ -56,6 +56,7 @@ class Videos
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -131,12 +132,14 @@ class Videos
         return $this->categories;
     }
 
+    public function setCategories($category) {
+        $this->categories = $category;
+    }
+
     public function addCategory(Category $category): self
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-            $category->addVideo($this);
-        }
+        $category->addVideo($this);
+        $this->categories = $category;
 
         return $this;
     }

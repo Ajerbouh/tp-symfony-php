@@ -8,7 +8,7 @@ services:
       - 80:80
     depends_on:
       - database
-    volumes:
+    volumes: 
       - .:/app
     environment:
       WEB_DOCUMENT_ROOT: /app/public

@@ -52,7 +52,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="simple_array")
      */
-    private $roles;
+    private $roles = [];
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Videos", mappedBy="user")
@@ -62,7 +62,6 @@ class User implements UserInterface
     public function __construct()
     {
         $this->videos = new ArrayCollection();
-        $this->roles = array('ROLE_USER');
     }
 
     public function getId(): ?int
@@ -130,9 +129,13 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
-        return $this->roles;
+        $roles = $this->roles;
+
+        $roles = ['ROLE_USER'];
+
+        return array_unique($roles);
     }
 
     public function setRoles($roles)

@@ -9,12 +9,15 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/app/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/app/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
-    </ul>
+{#{{ videos.hits.hits }}#}
+    {% for video in videos.hits.hits %}
+{#        <pre>#}
+{#            {{ dump(video) }}#}
+{#        </pre>#}
+{#        {{ dump(video._source.images) }}#}
+        <pre>
+            {{ dump(video._source.images[0].urls.original) }}
+            </pre>
+    {% endfor %}
 </div>
 {% endblock %}
